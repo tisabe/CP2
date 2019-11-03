@@ -2,15 +2,14 @@ import numpy as np
 import matplotlib.pyplot as p
 from scipy.io import wavfile
 
-def dft(file):
+def dft(file, rate=1):
     # discrete fourier transform
     if type(file) == str:
-        assert file.endswith(".wav") "file is not a wavefile"
+        assert file.endswith(".wav"), "file is not a wavefile"
         rate, v = wavfile.read(file)
     else:
-        rate = 1
         v = file
-    assert len(np.shape(v)) == 1 "input array needs to be one-dimensional"
+    assert len(np.shape(v)) == 1, "input array needs to be one-dimensional"
     N = len(v)
     xt = np.arange(0,N)*2*np.pi*rate/N # frequency vector in hertz
     n_vec = np.arange(N)
@@ -23,17 +22,16 @@ def dft(file):
     vt = np.matmul(exp_mat,v)
     return xt, vt
 
-def idft(v, rate):
+def idft(file, rate=1):
     # inverse discrete fourier transform
     if type(file) == str:
-        assert file.endswith(".wav") "file is not a wavefile"
+        assert file.endswith(".wav"), "file is not a wavefile"
         rate, v = wavfile.read(file)
     else:
-        rate = 1
         v = file
-    assert len(np.shape(v)) == 1 "input array needs to be one-dimensional"
+    assert len(np.shape(v)) == 1, "input array needs to be one-dimensional"
     N = len(v)
-    xt = np.arange(0,N)*2*np.pi*rate/N # frequency vector in hertz
+    xt = np.arange(0,N)*2*np.pi*rate/N # scaling may need to be changed
     n_vec = np.arange(N)
     n_mat, k_mat = np.meshgrid(np.arange(N),np.arange(N))
     vt = np.zeros(N,dtype="complex_")
